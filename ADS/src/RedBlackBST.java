@@ -415,7 +415,6 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         else                 return max(x.right); 
     } 
 
-
     /**
      * Returns the largest key in the symbol table less than or equal to <tt>key</tt>.
      * @param key the key

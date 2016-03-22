@@ -1,0 +1,88 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+public class bbst {
+	RBTree rbTree;
+	bbst() {
+		rbTree = new RBTree();
+	}
+	
+	public void increase(int key, int val) {
+		rbTree.insert(key, val);
+	}
+	
+	public void decrease(int key,int val) {
+		
+	}
+	
+	public static void main(String[] args) {
+		if(args.length != 1) {
+			System.out.println("Invalid inputs");
+			return;
+		}
+		//storing input filename
+		String fileName = args[0];
+		BufferedReader br1 = null;
+		BufferedReader br2 = null;
+		
+		bbst test = new bbst();
+		try {
+			String currLine = null;
+			// load the file into bufferedReader
+			br1 = new BufferedReader(new FileReader(fileName));
+			//read # of key value pairs
+			int n = Integer.valueOf(br1.readLine());
+			
+			while((currLine = br1.readLine()) != null) {
+				String[] nums = currLine.split(" ");
+				// if (key,value) format is not present ignore that line
+				if(nums.length == 2) {
+					int a = Integer.valueOf(nums[0]);
+					int b = Integer.valueOf(nums[1]);
+					//start insert the key-value as node to RBTree
+					//System.out.println(a +" "+ b);
+					test.increase(a, b);
+				}
+			}
+			br2 = new BufferedReader(new InputStreamReader(System.in));
+			while(true) {
+				currLine = br2.readLine();
+				String[] commands = currLine.split(" ");
+				String command = commands[0];
+				
+				switch (command) {
+					case "increase":
+						test.increase(Integer.valueOf(commands[1]), Integer.valueOf(commands[2]));
+						break;
+					case "reduce":
+						test.decrease(Integer.valueOf(commands[1]), Integer.valueOf(commands[2]));
+						break;
+					case "previous":
+						break;
+					case "next":
+						break;
+					case "count":
+						test.count(Integer.valueOf(commands[1]));
+						break;
+					case "inrange":
+						break;
+					case "quit":
+						return;
+					default:
+						break;
+				}
+			}
+			
+		} catch(IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(br1 != null) br1.close();
+				if(br1 != null) br2.close();
+			} catch (IOException io) {
+				io.printStackTrace();
+			}
+		}
+	}
+}
