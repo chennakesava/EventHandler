@@ -1,4 +1,5 @@
 package rbbst;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -37,10 +38,6 @@ public class bbst {
 		return rbTree.previous(key);
 	}
 	
-	public void buildTree(int n, int[] keys,int[] values) {
-		rbTree.buildTree(n, keys, values);
-	}
-	
 	public static void main(String[] args) {
 //		if(args.length != 1) {
 //			System.out.println("Invalid inputs");
@@ -61,7 +58,6 @@ public class bbst {
 			int n = Integer.valueOf(br1.readLine());
 			int[] keys = new int[n];
 			int[] values = new int[n];
-			int i = 0;
 			while((currLine = br1.readLine()) != null) {
 				String[] nums = currLine.split(" ");
 				// if (key,value) format is not present ignore that line
@@ -70,7 +66,6 @@ public class bbst {
 					//start insert the key-value as node to RBTree
 					//test.increase(a, b);
 			}
-			test.buildTree(n, keys, values);
 			//br2 = new BufferedReader(new InputStreamReader(System.in));
 			br2 = new BufferedReader(new FileReader(fileName2));
 			while(true) {
@@ -113,12 +108,10 @@ public class bbst {
 		} finally {
 			try {
 				if(br1 != null) br1.close();
-				if(br2 != null) br2.close();
+				if(br1 != null) br2.close();
 			} catch (IOException io) {
 				io.printStackTrace();
 			}
 		}
 	}
 }
-
-

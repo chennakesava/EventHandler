@@ -20,7 +20,7 @@ public class RBBST {
 //    }
 	
 	public void buildTree(int n, int[] keys, int[] values) {
-		int rLevel = (int) Math.ceil(Math.log(n+1)/Math.log(2)) ;
+		int rLevel = 
 		root = createRBTree(0, n-1, 0,rLevel, keys, values);
 		
 	}

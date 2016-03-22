@@ -1,4 +1,5 @@
 package rbbst;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -70,7 +71,6 @@ public class bbst {
 					//start insert the key-value as node to RBTree
 					//test.increase(a, b);
 			}
-			test.buildTree(n, keys, values);
 			//br2 = new BufferedReader(new InputStreamReader(System.in));
 			br2 = new BufferedReader(new FileReader(fileName2));
 			while(true) {
@@ -113,12 +113,10 @@ public class bbst {
 		} finally {
 			try {
 				if(br1 != null) br1.close();
-				if(br2 != null) br2.close();
+				if(br1 != null) br2.close();
 			} catch (IOException io) {
 				io.printStackTrace();
 			}
 		}
 	}
 }
-
-

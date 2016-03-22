@@ -7,7 +7,7 @@
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="rbbst.bbst"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="C:/Downloads/Project/test_10000000.txt C:/Downloads/Project/commands.txt"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="C:/Downloads/Project/test_1000000.txt C:/Downloads/Project/commands.txt"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ADS"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms4048M"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms4096m"/>
 </launchConfiguration>

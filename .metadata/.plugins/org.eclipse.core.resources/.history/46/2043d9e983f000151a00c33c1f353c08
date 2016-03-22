@@ -122,3 +122,49 @@ public class bbst {
 }
 
 
+//Node class and its properties
+class Node {
+	private int key;
+	private int value;
+	private boolean color;
+	Node left,right;
+	
+	//initializing a node with a key,value,color and size N
+	public Node(int key,int value, boolean color) {
+		this.key = key;
+		this.value = value;
+		this.color = color;
+	}
+	
+	//get node's key
+	public int getKey() {
+		return key;
+	}
+	
+	//set node's key
+	public void setKey(int key) {
+		this.key = key;
+	}
+	
+	//get the value of the node
+	public int getValue() {
+		return value;
+	}
+	
+	//set the value for the node
+	public void setValue(int val) {
+		this.value = val;
+	}
+	
+	//get the color of the node
+	public boolean getColor() {
+		return color;
+	}
+	
+	//set color for the node
+	public void setColor(boolean color) {
+		this.color = color;
+	}
+} 
+
+

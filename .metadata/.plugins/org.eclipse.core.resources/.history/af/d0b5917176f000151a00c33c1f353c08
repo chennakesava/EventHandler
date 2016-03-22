@@ -19,23 +19,18 @@ public class RBBST {
 //        root = buildFromSorted(0, 0, size-1, computeRedLevel(size), it);
 //    }
 	
-	public void buildTree(int n, int[] keys, int[] values) {
-		int rLevel = (int) Math.ceil(Math.log(n+1)/Math.log(2)) ;
-		root = createRBTree(0, n-1, 0,rLevel, keys, values);
-		
-	}
+//	private Node createRBTree(int low,int high, int Rlevel,int[] keys, int[] values) {
+//		if(low > high) return null;
+//		
+//		int mid = low + (high-low)/2;
+//		Node node = new Node(keys[mid],)
+//		
+//	}
 	
-	private Node createRBTree(int low,int high, int currLevel,int Rlevel,int[] keys, int[] values) {
-		if(low > high) return null;
-		
-		int mid = low + (high-low)/2;
-		Node node = new Node(keys[mid],values[mid],Black);
-		node.left = createRBTree(low,mid-1,currLevel+1,Rlevel,keys,values);
-		node.right = createRBTree(mid+1,high,currLevel+1,Rlevel,keys,values);
-		
-		if(currLevel == Rlevel) node.setColor(Red);
-		return node;
-	}
+	//return size of subtree rooted at Node node
+//	public int size(Node node) {
+//		return node != null ?  node.getN() :  0;
+//	}
 	
 	//RedNode check
 	public boolean isRed(Node node) {
@@ -93,7 +88,7 @@ public class RBBST {
 	
 	//inserting key,val into RBTree with rotations and balancing logic
 	private Node insert(Node node,int key,int val) {
-		if(node == null) return new Node(key,val,Red);
+		if(node == null) return new Node(key,val,Red,1);
 		
 		if(node.getKey() > key) 
 			node.left = insert(node.left,key,val);
@@ -121,6 +116,8 @@ public class RBBST {
 		tmp.left = node;
 		tmp.setColor(tmp.left.getColor());
 		tmp.left.setColor(Red);
+		//tmp.setN(node.getN());
+		//node.setN(size(node.left) + size(node.right) + 1);
 		return tmp;
 	}
 	
@@ -132,6 +129,8 @@ public class RBBST {
 		tmp.right = node;
 		tmp.setColor(tmp.right.getColor());
 		tmp.right.setColor(Red);
+		//tmp.setN(node.getN());
+		//node.setN(size(node.left) + size(node.right) + 1);
 		return tmp;
 	}
 	
@@ -192,6 +191,8 @@ public class RBBST {
 		
 		if(isRed(node.left) && isRed(node.right)) 
 			changeColors(node);
+		
+		//node.setN(size(node.left) + size(node.right) + 1);
 		
 		return node;
 	}
@@ -327,14 +328,26 @@ class Node {
 	private int key;
 	private int value;
 	private boolean color;
+	private int N;
 	Node left,right;
 	
 	//initializing a node with a key,value,color and size N
-	public Node(int key,int value, boolean color) {
+	public Node(int key,int value, boolean color, int N) {
 		this.key = key;
 		this.value = value;
 		this.color = color;
+		//this.N = N;
 	}
+	
+	//return N value
+//	public int getN() {
+//		return N;
+//	}
+//	
+//	//set N value
+//	public void setN(int n) {
+//		this.N = n;
+//	}
 	
 	//get node's key
 	public int getKey() {

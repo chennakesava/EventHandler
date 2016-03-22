@@ -19,22 +19,12 @@ public class RBBST {
 //        root = buildFromSorted(0, 0, size-1, computeRedLevel(size), it);
 //    }
 	
-	public void buildTree(int n, int[] keys, int[] values) {
-		int rLevel = (int) Math.ceil(Math.log(n+1)/Math.log(2)) ;
-		root = createRBTree(0, n-1, 0,rLevel, keys, values);
-		
-	}
-	
-	private Node createRBTree(int low,int high, int currLevel,int Rlevel,int[] keys, int[] values) {
+	private Node createRBTree(int low,int high, int Rlevel,int[] keys, int[] values) {
 		if(low > high) return null;
 		
 		int mid = low + (high-low)/2;
 		Node node = new Node(keys[mid],values[mid],Black);
-		node.left = createRBTree(low,mid-1,currLevel+1,Rlevel,keys,values);
-		node.right = createRBTree(mid+1,high,currLevel+1,Rlevel,keys,values);
 		
-		if(currLevel == Rlevel) node.setColor(Red);
-		return node;
 	}
 	
 	//RedNode check
@@ -93,7 +83,7 @@ public class RBBST {
 	
 	//inserting key,val into RBTree with rotations and balancing logic
 	private Node insert(Node node,int key,int val) {
-		if(node == null) return new Node(key,val,Red);
+		if(node == null) return new Node(key,val,Red,1);
 		
 		if(node.getKey() > key) 
 			node.left = insert(node.left,key,val);
@@ -327,10 +317,11 @@ class Node {
 	private int key;
 	private int value;
 	private boolean color;
+	private int N;
 	Node left,right;
 	
 	//initializing a node with a key,value,color and size N
-	public Node(int key,int value, boolean color) {
+	public Node(int key,int value, boolean color, int N) {
 		this.key = key;
 		this.value = value;
 		this.color = color;
