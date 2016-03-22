@@ -1,0 +1,340 @@
+package rbbst;
+
+/*
+ *author: Chennkesava Ijjada  
+ */
+
+public class RBBST {
+	//root of redblack tree
+	private Node root;
+	
+	//boolean color flags
+	private static final boolean Red = true;
+	private static final boolean Black = false;
+	
+	public RBBST() {}
+	
+//	void buildFromSorted (int size, Iterator<EventCounter.Event> it) {
+//        this.size = size;
+//        root = buildFromSorted(0, 0, size-1, computeRedLevel(size), it);
+//    }
+	
+	//return size of subtree rooted at Node node
+	public int size(Node node) {
+		return node != null ?  node.getN() :  0;
+	}
+	
+	//RedNode check
+	public boolean isRed(Node node) {
+		return node != null ? node.getColor() == Red : false;
+	}
+	
+	//get value for a given key in RBTree, returns value if key exists else 0
+	public int get(int key) {
+		Node node = root;
+		while(node != null) {
+			if(node.getKey() == key) 
+				return node.getValue();
+			else if(node.getKey() > key) 
+				node = node.left;
+			else 
+				node = node.right;
+		}
+		return 0;
+	}
+	
+	//check whether given key exists in RBTree
+	public boolean contains(int key) {
+		return get(key) != 0;
+	}
+	
+	//check whether RBTree is empty
+	private boolean isEmpty(){
+		return root == null;
+	}
+	
+ 	//inserting a new key,value into RBTree
+	public void insert(int key, int val) {		
+		root = insert(root,key,val);
+		root.setColor(Black);
+	}
+	
+	//logic for reducing the count for given key
+	public void reduce(int key,int val) {
+		if(get(key) == 0) return;
+		Node node = root;
+		while(node != null) {
+			if(node.getKey() == key) {
+				int k = node.getValue() - val;
+				node.setValue(k);
+				if(k <= 0) {
+					delete(key);
+				}
+				return;
+			} else if(node.getKey() > key) 
+				node = node.left;
+			else 
+				node = node.right;
+		}
+	}
+	
+	private Node insert(Node node,int key,int val) {
+		if(node == null) return new Node(key,val,Red,1);
+		
+		if(node.getKey() > key) 
+			node.left = insert(node.left,key,val);
+		else if(node.getKey() < key) 
+			node.right = insert(node.right,key,val);
+		else 
+			node.setValue(node.getValue() + val);
+		
+		if(isRed(node.right) && !isRed(node.left)) node = rotateToLeft(node);
+		if(isRed(node.left) && isRed(node.left.left)) node = rotateToRight(node);
+		if(isRed(node.left) && isRed(node.right)) changeColors(node);
+		
+		node.setN(size(node.right) + size(node.left) + 1); 
+		return node;
+	}
+	
+	private Node rotateToLeft(Node node) {
+		Node tmp = node.right;
+		node.right = tmp.left;
+		
+		tmp.left = node;
+		tmp.setColor(tmp.left.getColor());
+		tmp.left.setColor(Red);
+		tmp.setN(node.getN());
+		node.setN(size(node.left) + size(node.right) + 1);
+		return tmp;
+	}
+	
+	private Node rotateToRight(Node node) {
+		Node tmp = node.left;
+		node.left = tmp.right;
+		
+		tmp.right = node;
+		tmp.setColor(tmp.right.getColor());
+		tmp.right.setColor(Red);
+		tmp.setN(node.getN());
+		node.setN(size(node.left) + size(node.right) + 1);
+		return tmp;
+	}
+	
+	//logic for changing the color of the given node
+	private void changeColors(Node node) {
+		node.setColor(!node.getColor());
+		node.left.setColor(!node.left.getColor());
+		node.right.setColor(!node.right.getColor());
+	}
+	
+	//deleting given from RBTree
+	public void delete(int key) {
+		if(!contains(key)) return;
+		
+		if(!(isRed(root.left) || isRed(root.right))) root.setColor(Red);
+		
+		root = delete(root,key);
+		if(!isEmpty()) root.setColor(Black);
+	}
+	
+	private Node delete(Node node, int key) {
+		if(key < node.getKey()) {
+			if(!(isRed(node.left) || isRed(node.left.left)))
+				node = moveRedNodeLeft(node);
+			node.left = delete(node.left,key);
+		} else {
+			if(isRed(node.left))
+				node = rotateToRight(node);
+			
+			if(key == node.getKey() && node.right == null) 
+				return null;
+			
+			if(!(isRed(node.right) || isRed(node.right.left)))
+				node = moveRedNodeRight(node);
+			
+			if(key > node.getKey()) {
+				node.right = delete(node.right,key);
+			} else {
+				Node x = minNode(node.right);
+				node.setKey(x.getKey());
+				node.setValue(x.getValue());
+				node.right = deleteMinNode(node.right);
+			}
+		}
+		
+		return balance(node);
+		
+	}
+	
+	private Node balance(Node node) {
+		if(isRed(node.right)) node = rotateToLeft(node);
+		if(isRed(node.left) && isRed(node.left.left)) node = rotateToRight(node);
+		if(isRed(node.left) && isRed(node.right)) changeColors(node);
+		
+		node.setN(size(node.left) + size(node.right) + 1);
+		return node;
+	}
+	
+	private Node moveRedNodeLeft(Node node) {
+		changeColors(node);
+		if(isRed(node.right.left)) {
+			node.right = rotateToRight(node.right);
+			node = rotateToLeft(node);
+			changeColors(node);
+		}
+		return node;
+	}
+	
+	private Node moveRedNodeRight(Node node) {
+		changeColors(node);
+		if(isRed(node.left.left)) {
+			node = rotateToRight(node);
+			changeColors(node);
+		}
+		return node;
+	}
+	
+	private Node minNode(Node node) {
+		if(node.left == null) 
+			return node;
+		else 
+			return minNode(node.left);
+	}
+	
+	private Node maxNode(Node node) {
+		if(node.right == null) 
+			return node;
+		else 
+			return maxNode(node.right);
+	}
+	
+	private Node deleteMinNode(Node node) {
+		if(node.left == null)
+			return null;
+		if(!(isRed(node.left) || isRed(node.left.left)))
+			node = moveRedNodeLeft(node);
+		
+		node.left = deleteMinNode(node.left);
+		
+		return balance(node);
+	}
+	
+	public int range(int low, int high) {
+		if(high < low) 
+			return 0;
+		
+		return range(root,low,high);
+	}
+	
+	private int range(Node node,int low, int high) { 
+	  if (node == null) return 0;
+	  int k = 0;
+	  if(low < node.getKey()) k = range(node.left,low,high);
+	  if(low <= node.getKey() && high >= node.getKey()) k += node.getValue();
+	  if(high > node.getKey()) k += range(node.right,low,high);
+	  
+	  return k;
+	} 
+	
+	public int[] previous(int key) {
+		int[] result = new int[2];
+		Node node = previous(root,key,null);
+		if(node != null) {
+			result[0] = node.getKey();
+			result[1] = node.getValue();
+		}
+		
+		return result;
+	}
+	
+	private Node previous(Node node, int key, Node p) {
+	    if (node == null) return p;
+	    
+	    if (node.getKey() > key) {
+	        return previous(node.left, key, p);
+	    } else if (node.getKey() < key) {
+	        return previous(node.right, key, node);
+	    }
+	    
+	    if (node.left != null) {
+	        return maxNode(node.left);
+	    }
+	    
+	    return p;
+	}
+	
+	public int[] next(int value) {
+		int[] result = new int[2];
+	    Node node = next(root, value, null);
+	    if (node != null) {
+	       result[0] = node.getKey();
+	       result[1] = node.getValue();
+	    }
+	    
+	    return result;
+	}
+
+	private Node next(Node node, int key, Node p) {
+	    if (node == null) return p;
+	    
+	    if (node.getKey() > key) {
+	        return next(node.left, key, node);
+	    } else if (node.getKey() < key) {
+	        return next(node.right, key, p);
+	    }
+	    
+	    if (node.right != null) {
+	        return minNode(node.right);
+	    }
+	    return p;
+	}
+	
+}
+
+class Node {
+	private int key;
+	private int value;
+	private boolean color;
+	private int N;
+	Node left,right;
+	
+	public Node(int key,int value, boolean color, int N) {
+		this.key = key;
+		this.value = value;
+		this.color = color;
+		this.N = N;
+	}
+	
+	public int getN() {
+		return N;
+	}
+	
+	public void setN(int n) {
+		this.N = n;
+	}
+	
+	public int getKey() {
+		return key;
+	}
+	
+	public void setKey(int key) {
+		this.key = key;
+	}
+	
+	public int getValue() {
+		return value;
+	}
+	
+	public void setValue(int val) {
+		this.value = val;
+	}
+	
+	public boolean getColor() {
+		return color;
+	}
+	
+	public void setColor(boolean color) {
+		this.color = color;
+	}
+} 
+
