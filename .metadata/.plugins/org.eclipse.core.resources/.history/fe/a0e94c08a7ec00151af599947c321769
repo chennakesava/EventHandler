@@ -1,0 +1,38 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class bbst {
+	public static void main(String[] args) {
+		if(args.length != 1) {
+			System.out.println("Invalid inputs");
+			return;
+		}
+		//storing input filename
+		String fileName = args[0];
+		BufferedReader br = null;
+		
+		try {
+			String currLine = null;
+			// load the file into bufferedReader
+			br = new BufferedReader(new FileReader(fileName));
+			//read # of key value pairs
+			int n = Integer.valueOf(br.readLine());
+			
+			while((currLine = br.readLine()) != null) {
+				String[] nums = currLine.split(" ");
+				// if (key,value) format is not present ignore that line
+				if(nums.length != 2) {
+					int a = Integer.valueOf(nums[0]);
+					int b = Integer.valueOf(nums[1]);
+					
+					//start insert the key-value as node to RBTree
+					System.out.println(a +" "+ b);
+				}
+			}
+			
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+}

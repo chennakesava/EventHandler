@@ -1,0 +1,27 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class bbst {
+	public static void main(String[] args) {
+		String fileName = args[0];
+		
+		BufferedReader br = null;
+		try {
+			String currLine = null;
+			br = new BufferedReader(new FileReader(fileName));
+			int n = Integer.valueOf(br.readLine());
+			while((currLine = br.readLine()) != null) {
+				String[] nums = currLine.split(" ");
+				if(nums.length > 1) {
+					int a = Integer.valueOf(nums[0]);
+					int b = Integer.valueOf(nums[1]);
+					System.out.println(a +" "+ b);
+				}
+			}
+			
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
